@@ -1,5 +1,5 @@
 // ----------------------------
-// EMI Calculator (NO TENURE) - FIXED
+// EMI Calculator (NO CHARTS) - CLEAN VERSION
 // ----------------------------
 (() => {
 
@@ -24,12 +24,8 @@
 
   const scheduleTableBody = document.querySelector('#scheduleTable tbody');
 
-  let balanceChart, doughnutChart;
-  const balanceCtx = document.getElementById('balanceChart').getContext('2d');
-  const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
-
   // ----------------------
-  // Dark / Light Theme
+  // Theme
   // ----------------------
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
@@ -156,42 +152,6 @@
   }
 
   // ----------------------
-  // Charts
-  // ----------------------
-  function renderCharts(rows, summary) {
-    const labels = rows.map(r => "M" + r.month);
-    const balances = rows.map(r => r.opening);
-
-    if (balanceChart) balanceChart.destroy();
-    balanceChart = new Chart(balanceCtx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [{
-          label: "Outstanding Balance",
-          data: balances,
-          borderColor: "#4F81BD",
-          backgroundColor: "rgba(79,129,189,0.15)",
-          fill: true,
-          tension: 0.3
-        }]
-      }
-    });
-
-    if (doughnutChart) doughnutChart.destroy();
-    doughnutChart = new Chart(doughnutCtx, {
-      type: "doughnut",
-      data: {
-        labels: ["Principal Paid", "Interest Paid"],
-        datasets: [{
-          data: [summary.totalPrincipalPaid, summary.totalInterest],
-          backgroundColor: ["#007aff", "#ff4d6a"]
-        }]
-      }
-    });
-  }
-
-  // ----------------------
   // Calculate
   // ----------------------
   let schedule = [];
@@ -219,7 +179,6 @@
 
       renderSummary(summary);
       renderTable(schedule);
-      renderCharts(schedule, summary);
 
     } catch (e) {
       alert(e.message);
@@ -235,6 +194,7 @@
     if (!schedule.length) return alert("Please calculate first.");
 
     const wb = XLSX.utils.book_new();
+
     const ws1 = XLSX.utils.aoa_to_sheet([
       ["Loan EMI Summary"],
       [],
@@ -244,7 +204,6 @@
       ["Total Months", summary.months],
       ["Total Interest Paid", summary.totalInterest]
     ]);
-
     XLSX.utils.book_append_sheet(wb, ws1, "Summary");
 
     const ws2 = XLSX.utils.aoa_to_sheet([
@@ -253,7 +212,6 @@
         r.month, r.opening, r.emi, r.principalRepaid, r.interest, r.closing
       ])
     ]);
-
     XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
 
     XLSX.writeFile(wb, `EMI_Schedule_${summary.principal}.xlsx`);
