@@ -124,13 +124,15 @@
   // Render Summary
   // ----------------------
   function renderSummary(sum) {
-    r_principal.innerText = "₹" + sum.principal.toLocaleString();
-    r_emi.innerText = "₹" + sum.emi.toLocaleString();
-    r_rate.innerText = sum.rate + "%";
-    r_months.innerText = sum.months;
-    r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
-    r_total_principal.innerText = "₹" + sum.totalPrincipalPaid.toLocaleString();
-  }
+  r_principal.innerText = "₹" + sum.principal.toLocaleString();
+  r_emi.innerText = "₹" + sum.emi.toLocaleString();
+  r_rate.innerText = sum.rate + "%";
+  r_months.innerText = sum.months;
+  r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
+
+  const totalPaid = sum.principal + sum.totalInterest;
+  r_total_principal.innerText = "₹" + totalPaid.toLocaleString();
+}
 
   // ----------------------
   // Render Table
