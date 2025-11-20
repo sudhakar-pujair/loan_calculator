@@ -91,10 +91,9 @@ input{
 /* 🔥 FIX: buttons lifted to align with inputs */
 .actions {
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  padding-top: 6px;
-  transform: translateY(-6px);
+  gap: 10px;
+  align-self: flex-end;
+  margin-top: 18px;
 }
 
 .btn{
