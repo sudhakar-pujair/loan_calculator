@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EMI Calculator</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- SheetJS Excel -->
+  <!-- Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <!-- PDF -->
@@ -18,40 +17,38 @@
 
 <body>
 
-<!-- LEFT SIDEBAR PANEL -->
+<!-- LEFT SIDEBAR -->
 <div class="sidebar">
 
   <h2>EMI Calculator</h2>
 
-  <!-- THEME SWITCH (optional) -->
-  <div style="margin-bottom:10px;">
-    <label class="switch">
-      <input id="themeToggle" type="checkbox" />
-      <span class="slider"></span>
-    </label>
-    <span class="theme-label" id="themeLabel">Dark</span>
-  </div>
+  <!-- Theme Switch -->
+  <label class="switch">
+    <input id="themeToggle" type="checkbox" />
+    <span class="slider"></span>
+  </label>
+  <span id="themeLabel">Dark</span>
 
-  <!-- INPUTS -->
+  <!-- Inputs -->
   <div class="form-group">
     <label>Principal (₹)</label>
-    <input id="principal" type="number" placeholder="1429094" />
+    <input id="principal" type="number" placeholder="1429094">
     <div id="errPrincipal" class="error"></div>
   </div>
 
   <div class="form-group">
     <label>EMI (₹)</label>
-    <input id="emi" type="number" placeholder="100000" />
+    <input id="emi" type="number" placeholder="100000">
     <div id="errEmi" class="error"></div>
   </div>
 
   <div class="form-group">
     <label>Interest Rate (%)</label>
-    <input id="rate" type="number" step="0.01" placeholder="14" />
+    <input id="rate" type="number" step="0.01" placeholder="14">
     <div id="errRate" class="error"></div>
   </div>
 
-  <!-- BUTTONS -->
+  <!-- Buttons at bottom -->
   <div class="actions">
     <button type="button" class="btn primary" id="calculate">Calculate</button>
     <button type="button" class="btn" id="downloadExcel">Download Excel</button>
@@ -63,46 +60,39 @@
 <!-- RIGHT CONTENT AREA -->
 <div class="main">
 
-  <!-- SUMMARY -->
+  <!-- Summary -->
   <section class="card">
-    <h3 style="text-align:center;margin-bottom:10px;">Result Summary</h3>
+    <h3 style="text-align:center;">Result Summary</h3>
 
     <div class="summary-grid">
-
       <div class="summary-item">
         <div class="label">Principal</div>
         <div class="value" id="r_principal">—</div>
       </div>
-
       <div class="summary-item">
         <div class="label">EMI</div>
         <div class="value" id="r_emi">—</div>
       </div>
-
       <div class="summary-item">
         <div class="label">Interest Rate</div>
         <div class="value" id="r_rate">—</div>
       </div>
-
       <div class="summary-item">
         <div class="label">Total Months</div>
         <div class="value" id="r_months">—</div>
       </div>
-
       <div class="summary-item">
         <div class="label">Total Interest Paid</div>
         <div class="value" id="r_interest">—</div>
       </div>
-
       <div class="summary-item">
         <div class="label">Total Paid Amount</div>
         <div class="value" id="r_total_paid">—</div>
       </div>
-
     </div>
   </section>
 
-  <!-- EMI TABLE -->
+  <!-- Table -->
   <section class="card">
     <h3 style="text-align:center;">EMI Schedule</h3>
 
@@ -124,9 +114,8 @@
 
   </section>
 
-</div> <!-- END MAIN -->
+</div>
 
-<!-- JS -->
 <script src="script.js"></script>
 
 </body>
