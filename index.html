@@ -7,10 +7,10 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- SheetJS -->
+  <!-- SheetJS Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-  <!-- jsPDF + html2canvas -->
+  <!-- PDF -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
@@ -32,7 +32,7 @@
 <main class="container">
 
   <!-- INPUT CARD -->
-  <section class="card" id="inputCard">
+  <section class="card">
     <form id="emiForm" class="form-row" autocomplete="off">
 
       <div class="form-group">
@@ -63,7 +63,7 @@
   </section>
 
   <!-- SUMMARY CARD -->
-  <section class="card" id="summaryCard">
+  <section class="card">
     <div class="summary-grid">
 
       <div class="summary-item">
@@ -92,15 +92,15 @@
       </div>
 
       <div class="summary-item">
-         <div class="label">Total Paid Amount</div>
-        <div class="value" id="r_total_principal">—</div>
+        <div class="label">Total Paid Amount</div>
+        <div class="value" id="r_total_paid">—</div>
       </div>
 
     </div>
   </section>
 
-  <!-- SCHEDULE CARD -->
-  <section class="card" id="tableCard">
+  <!-- SCHEDULE TABLE -->
+  <section class="card">
     <h3>EMI Schedule</h3>
 
     <div class="table-wrap" id="pdfContent">

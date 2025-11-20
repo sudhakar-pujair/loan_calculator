@@ -1,5 +1,5 @@
 // ----------------------------
-// EMI Calculator (NO CHARTS) - CLEAN VERSION
+// EMI Calculator (NO CHARTS)
 // ----------------------------
 (() => {
 
@@ -20,12 +20,12 @@
   const r_rate = document.getElementById('r_rate');
   const r_months = document.getElementById('r_months');
   const r_interest = document.getElementById('r_interest');
-  const r_total_principal = document.getElementById('r_total_principal');
+  const r_total_paid = document.getElementById('r_total_paid');
 
   const scheduleTableBody = document.querySelector('#scheduleTable tbody');
 
   // ----------------------
-  // Theme
+  // Dark/Light theme
   // ----------------------
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
@@ -45,7 +45,7 @@
   // ----------------------
   // Validation
   // ----------------------
-  function validateInputs(P, EMI, rate) {
+  function validate(P, EMI, rate) {
     let ok = true;
 
     errPrincipal.innerText = "";
@@ -74,25 +74,28 @@
   // Schedule Builder
   // ----------------------
   function buildSchedule(P, EMI, rate) {
-    const monthlyRate = rate / 12 / 100;
+    const mRate = rate / 12 / 100;
+
     let balance = P;
     let month = 0;
 
-    const firstInterest = balance * monthlyRate;
+    const firstInterest = balance * mRate;
     if (EMI <= firstInterest) {
       throw new Error("EMI too low! First month interest is ₹" + firstInterest.toFixed(2));
     }
 
     const rows = [];
+    let totalInterest = 0;
+    let totalPrincipalPaid = 0;
 
     while (balance > 0) {
       month++;
 
-      const interest = balance * monthlyRate;
+      const interest = balance * mRate;
       let principalRepaid = EMI - interest;
       let closing = balance - principalRepaid;
 
-      if (closing < 0) { 
+      if (closing < 0) {
         principalRepaid = balance;
         closing = 0;
       }
@@ -100,17 +103,16 @@
       rows.push({
         month,
         opening: Number(balance.toFixed(2)),
-        emi: Number(EMI.toFixed(2)),
+        emi: EMI,
         principalRepaid: Number(principalRepaid.toFixed(2)),
         interest: Number(interest.toFixed(2)),
         closing: Number(closing.toFixed(2))
       });
 
+      totalInterest += interest;
+      totalPrincipalPaid += principalRepaid;
       balance = closing;
     }
-
-    const totalInterest = rows.reduce((s, r) => s + r.interest, 0);
-    const totalPrincipalPaid = rows.reduce((s, r) => s + r.principalRepaid, 0);
 
     return {
       rows,
@@ -124,15 +126,16 @@
   // Render Summary
   // ----------------------
   function renderSummary(sum) {
-  r_principal.innerText = "₹" + sum.principal.toLocaleString();
-  r_emi.innerText = "₹" + sum.emi.toLocaleString();
-  r_rate.innerText = sum.rate + "%";
-  r_months.innerText = sum.months;
-  r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
+    r_principal.innerText = "₹" + sum.principal.toLocaleString();
+    r_emi.innerText = "₹" + sum.emi.toLocaleString();
+    r_rate.innerText = sum.rate + "%";
+    r_months.innerText = sum.months;
+    r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
 
-  const totalPaid = sum.principal + sum.totalInterest;
-  r_total_principal.innerText = "₹" + totalPaid.toLocaleString();
-}
+    // FIXED ✔ Total Paid = Principal + Interest
+    const totalPaid = sum.principal + sum.totalInterest;
+    r_total_paid.innerText = "₹" + totalPaid.toLocaleString();
+  }
 
   // ----------------------
   // Render Table
@@ -142,19 +145,19 @@
     rows.forEach(r => {
       scheduleTableBody.innerHTML += `
         <tr>
-          <td style="text-align:center">${r.month}</td>
-          <td>₹${r.opening.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          <td>₹${r.emi.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          <td>₹${r.principalRepaid.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          <td>₹${r.interest.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          <td>₹${r.closing.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+          <td>${r.month}</td>
+          <td>₹${r.opening.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+          <td>₹${r.emi.toLocaleString()}</td>
+          <td>₹${r.principalRepaid.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+          <td>₹${r.interest.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+          <td>₹${r.closing.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
         </tr>
       `;
     });
   }
 
   // ----------------------
-  // Calculate
+  // Calculate + Render
   // ----------------------
   let schedule = [];
   let summary = {};
@@ -164,26 +167,26 @@
     const EMI = Number(emiEl.value);
     const rate = Number(rateEl.value);
 
-    if (!validateInputs(P, EMI, rate)) return;
+    if (!validate(P, EMI, rate)) return;
 
     try {
-      const result = buildSchedule(P, EMI, rate);
+      const out = buildSchedule(P, EMI, rate);
 
-      schedule = result.rows;
+      schedule = out.rows;
       summary = {
         principal: P,
         emi: EMI,
         rate,
-        months: result.months,
-        totalInterest: result.totalInterest,
-        totalPrincipalPaid: result.totalPrincipalPaid
+        months: out.months,
+        totalInterest: out.totalInterest,
+        totalPrincipalPaid: out.totalPrincipalPaid
       };
 
       renderSummary(summary);
       renderTable(schedule);
 
-    } catch (e) {
-      alert(e.message);
+    } catch (err) {
+      alert(err.message);
     }
   }
 
@@ -204,8 +207,10 @@
       ["EMI", summary.emi],
       ["Interest Rate", summary.rate + "%"],
       ["Total Months", summary.months],
-      ["Total Interest Paid", summary.totalInterest]
+      ["Total Interest Paid", summary.totalInterest],
+      ["Total Paid Amount", summary.principal + summary.totalInterest]
     ]);
+
     XLSX.utils.book_append_sheet(wb, ws1, "Summary");
 
     const ws2 = XLSX.utils.aoa_to_sheet([
@@ -214,6 +219,7 @@
         r.month, r.opening, r.emi, r.principalRepaid, r.interest, r.closing
       ])
     ]);
+
     XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
 
     XLSX.writeFile(wb, `EMI_Schedule_${summary.principal}.xlsx`);
@@ -225,14 +231,18 @@
   downloadPdfBtn.addEventListener("click", async () => {
     if (!schedule.length) return alert("Please calculate first.");
 
-    const pdfTarget = document.getElementById("pdfContent");
-    const canvas = await html2canvas(pdfTarget);
-    const imgData = canvas.toDataURL("image/png");
+    const target = document.getElementById("pdfContent");
+    const canvas = await html2canvas(target);
+    const img = canvas.toDataURL("image/png");
 
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+    const pdf = new jsPDF('p','pt','a4');
 
-    pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
+    const pageWidth = pdf.internal.pageSize.width - 40;
+
+    const scaledHeight = (canvas.height * pageWidth) / canvas.width;
+
+    pdf.addImage(img, "PNG", 20, 20, pageWidth, scaledHeight);
     pdf.save(`EMI_Schedule_${summary.principal}.pdf`);
   });
 
