@@ -62,16 +62,15 @@ body{
   margin-bottom:16px;
 }
 
-.form-row{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  flex-wrap:wrap;
+.form-row {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .form-group{
-  flex:1;
-  min-width:160px;
+  flex: 0 0 150px;
 }
 
 label{
@@ -80,12 +79,13 @@ label{
   margin-bottom:4px;
 }
 
-input{
-  width:100%;
-  padding:6px 8px;
-  font-size:14px;
-  border-radius:6px;
-  border:1px solid #ccc;
+input {
+  width: 100%;
+  padding: 4px 6px;
+  height: 30px;
+  font-size: 13px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 /* 🔥 FIX: buttons lifted to align with inputs */
@@ -93,7 +93,7 @@ input{
   display: flex;
   gap: 10px;
   align-self: flex-end;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .btn{
