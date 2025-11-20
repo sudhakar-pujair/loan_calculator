@@ -3,91 +3,136 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EMI Calculator</title>
+  <title>EMI Calculator — Pro</title>
 
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Excel -->
+  <!-- SheetJS Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <!-- PDF -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-  <!-- Icons -->
+  <!-- Font Awesome for icons -->
   <script src="https://kit.fontawesome.com/a2e860a91f.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
 
-<!-- COLLAPSE BUTTON -->
-<div class="collapse-btn" id="toggleSidebar">
+<!-- Floating collapse / toggle button -->
+<button id="toggleSidebar" class="collapse-btn" aria-label="Toggle sidebar">
   <i class="fas fa-bars"></i>
-</div>
+</button>
 
-<!-- LAYOUT WRAPPER (FIX FOR BUTTON CLICK ISSUE) -->
+<!-- Layout wrapper -->
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar">
-
-    <h2>EMI Calculator</h2>
-
-    <!-- Fancy card -->
-    <div class="input-card">
-
-      <div class="form-group">
-        <label>Principal (₹)</label>
-        <input id="principal" type="number" placeholder="1429094">
+  <aside id="sidebar" class="sidebar" aria-label="Sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-logo">🔷</div>
+        <div class="brand-text">
+          <div class="brand-title">EMI <span>Pro</span></div>
+          <div class="brand-sub">Loan Assistant</div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>EMI (₹)</label>
-        <input id="emi" type="number" placeholder="100000">
+      <!-- theme toggle -->
+      <div class="theme-row">
+        <label class="theme-switch">
+          <input id="themeToggle" type="checkbox">
+          <span class="slider"></span>
+        </label>
+        <div id="themeLabel" class="theme-label">Dark</div>
       </div>
-
-      <div class="form-group">
-        <label>Interest Rate (%)</label>
-        <input id="rate" type="number" step="0.01" placeholder="14">
-      </div>
-
     </div>
 
-    <!-- Buttons -->
+    <!-- Collapsible input panel header -->
+    <button id="toggleInputCard" class="card-toggle">
+      <i class="fas fa-chevron-down"></i>
+      Loan Inputs
+    </button>
+
+    <!-- Input card (glass) -->
+    <div class="input-card" id="inputCard">
+      <div class="form-group">
+        <label><i class="fas fa-coins"></i> Principal (₹)</label>
+        <input id="principal" type="number" placeholder="e.g. 1429094" inputmode="numeric" />
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-hand-holding-usd"></i> EMI (₹)</label>
+        <input id="emi" type="number" placeholder="e.g. 100000" inputmode="numeric" />
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-percentage"></i> Interest Rate (%)</label>
+        <input id="rate" type="number" step="0.01" placeholder="e.g. 14" inputmode="decimal" />
+      </div>
+    </div>
+
+    <!-- spacer pushes actions to bottom -->
+    <div class="sidebar-spacer"></div>
+
+    <!-- actions / buttons -->
     <div class="actions">
-      <button type="button" class="btn primary" id="calculate">
-        <i class="fas fa-play"></i> Calculate
+      <button id="calculate" class="btn btn-gradient primary">
+        <i class="fas fa-play"></i><span>Calculate</span>
       </button>
 
-      <button type="button" class="btn" id="downloadExcel">
-        <i class="fas fa-file-excel"></i> Excel
+      <button id="downloadExcel" class="btn btn-gradient excel">
+        <i class="fas fa-file-excel"></i><span>Download Excel</span>
       </button>
 
-      <button type="button" class="btn" id="downloadPdf">
-        <i class="fas fa-file-pdf"></i> PDF
+      <button id="downloadPdf" class="btn btn-gradient pdf">
+        <i class="fas fa-file-pdf"></i><span>Download PDF</span>
       </button>
     </div>
+  </aside>
 
-  </div>
+  <!-- MAIN -->
+  <main class="main" id="main">
 
-  <!-- MAIN CONTENT -->
-  <div class="main" id="main">
-
-    <section class="card">
-      <h3 style="text-align:center;">Result Summary</h3>
+    <!-- top summary cards -->
+    <section class="card summary-card" id="summaryCard" aria-live="polite">
       <div class="summary-grid">
-        <div class="summary-item"><div class="label">Principal</div><div class="value" id="r_principal">—</div></div>
-        <div class="summary-item"><div class="label">EMI</div><div class="value" id="r_emi">—</div></div>
-        <div class="summary-item"><div class="label">Interest Rate</div><div class="value" id="r_rate">—</div></div>
-        <div class="summary-item"><div class="label">Total Months</div><div class="value" id="r_months">—</div></div>
-        <div class="summary-item"><div class="label">Total Interest</div><div class="value" id="r_interest">—</div></div>
-        <div class="summary-item"><div class="label">Total Paid Amount</div><div class="value" id="r_total_paid">—</div></div>
+        <div class="summary-item" data-anim>
+          <div class="label">Principal</div>
+          <div class="value" id="r_principal">—</div>
+        </div>
+
+        <div class="summary-item" data-anim>
+          <div class="label">EMI</div>
+          <div class="value" id="r_emi">—</div>
+        </div>
+
+        <div class="summary-item" data-anim>
+          <div class="label">Interest Rate</div>
+          <div class="value" id="r_rate">—</div>
+        </div>
+
+        <div class="summary-item" data-anim>
+          <div class="label">Total Months</div>
+          <div class="value" id="r_months">—</div>
+        </div>
+
+        <div class="summary-item" data-anim>
+          <div class="label">Total Interest Paid</div>
+          <div class="value" id="r_interest">—</div>
+        </div>
+
+        <div class="summary-item" data-anim>
+          <div class="label">Total Paid Amount</div>
+          <div class="value" id="r_total_paid">—</div>
+        </div>
       </div>
     </section>
 
-    <section class="card">
-      <h3 style="text-align:center;">EMI Schedule</h3>
-
+    <!-- schedule table card -->
+    <section class="card table-card" id="tableCard">
+      <h3 class="table-title">EMI Schedule</h3>
       <div class="table-wrap" id="pdfContent">
         <table id="scheduleTable">
           <thead>
@@ -103,14 +148,12 @@
           <tbody></tbody>
         </table>
       </div>
-
     </section>
 
-  </div>
-
+  </main>
 </div>
 
+<!-- JS -->
 <script src="script.js"></script>
-
 </body>
 </html>
