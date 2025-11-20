@@ -1,4 +1,4 @@
-/* DARK THEME DEFAULT */
+/* DARK THEME BY DEFAULT */
 :root{
   --bg: #0f1724;
   --card: #0b1220;
@@ -10,7 +10,7 @@
   --radius:10px;
 }
 
-/* LIGHT THEME */
+/* LIGHT THEME WHEN TOGGLED */
 [data-theme="light"]{
   --bg:#f4f6fb;
   --card:#fff;
@@ -71,20 +71,19 @@ body{
   margin-bottom:16px;
 }
 
-/* ----------------------------------------------------
-   INPUT ROW — LEFT ALIGNED WITH TAB (padding-left)
------------------------------------------------------- */
+/* --------------------------------------------
+   INPUT ROW — CENTERED
+--------------------------------------------- */
 .form-row{
   display:flex;
-  justify-content:flex-start;  /* LEFT SIDE */
-  gap:28px;                    /* spacing between inputs */
+  justify-content:center;
+  gap:28px;
   align-items:flex-start;
   flex-wrap:wrap;
   width:100%;
-  padding-left:25px;           /* TAB / INDENT LEFT */
 }
 
-/* Smaller input width */
+/* SMALLER WIDTH INPUTS */
 .form-group{
   flex:0 0 150px;
 }
@@ -115,15 +114,14 @@ label{
   display:block;
 }
 
-/* ----------------------------------------------------
-   BUTTONS — SAME COLOR FOR ALL, LEFT ALIGNED
------------------------------------------------------- */
+/* --------------------------------------------
+   BUTTONS — SAME COLOR FOR ALL
+--------------------------------------------- */
 .actions{
   display:flex;
   gap:10px;
-  align-self:flex-start;        /* LEFT */
-  margin-top:22px;              /* vertically align with inputs */
-  padding-left:25px;            /* match input row tab */
+  align-self:flex-end;
+  margin-top:0px;
 }
 
 .btn{
@@ -154,7 +152,7 @@ label{
   background:#2d3b55;
 }
 
-/* Calculate button same as others */
+/* SAME COLOR AS OTHER BUTTONS */
 .btn.primary{
   background:#eee;
   color:#333;
@@ -167,7 +165,9 @@ label{
   border:1px solid #555;
 }
 
-/* SUMMARY GRID */
+/* --------------------------------------------
+   SUMMARY GRID
+--------------------------------------------- */
 .summary-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -195,7 +195,9 @@ label{
   margin-top:4px;
 }
 
-/* TABLE */
+/* --------------------------------------------
+   TABLE
+--------------------------------------------- */
 .table-wrap{
   overflow:auto;
 }
