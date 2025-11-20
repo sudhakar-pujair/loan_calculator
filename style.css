@@ -65,7 +65,7 @@ body{
 .form-row{
   display:flex;
   gap:12px;
-  align-items:flex-end;
+  align-items:flex-start;
   flex-wrap:wrap;
 }
 
@@ -88,7 +88,14 @@ input{
   border:1px solid #ccc;
 }
 
-.actions{display:flex;gap:8px}
+/* 🔥 FIX: buttons lifted to align with inputs */
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding-top: 6px;
+  transform: translateY(-6px);
+}
 
 .btn{
   padding:8px 12px;

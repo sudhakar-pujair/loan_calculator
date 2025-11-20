@@ -25,7 +25,7 @@
   const scheduleTableBody = document.querySelector('#scheduleTable tbody');
 
   // ----------------------
-  // Dark/Light theme
+  // Theme switching
   // ----------------------
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
@@ -71,11 +71,10 @@
   }
 
   // ----------------------
-  // Schedule Builder
+  // Build EMI Schedule
   // ----------------------
   function buildSchedule(P, EMI, rate) {
     const mRate = rate / 12 / 100;
-
     let balance = P;
     let month = 0;
 
@@ -86,7 +85,6 @@
 
     const rows = [];
     let totalInterest = 0;
-    let totalPrincipalPaid = 0;
 
     while (balance > 0) {
       month++;
@@ -110,20 +108,18 @@
       });
 
       totalInterest += interest;
-      totalPrincipalPaid += principalRepaid;
       balance = closing;
     }
 
     return {
       rows,
       months: rows.length,
-      totalInterest: Number(totalInterest.toFixed(2)),
-      totalPrincipalPaid: Number(totalPrincipalPaid.toFixed(2))
+      totalInterest: Number(totalInterest.toFixed(2))
     };
   }
 
   // ----------------------
-  // Render Summary
+  // Summary Renderer
   // ----------------------
   function renderSummary(sum) {
     r_principal.innerText = "₹" + sum.principal.toLocaleString();
@@ -132,13 +128,13 @@
     r_months.innerText = sum.months;
     r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
 
-    // FIXED ✔ Total Paid = Principal + Interest
+    // ⭐ Correct Total Paid
     const totalPaid = sum.principal + sum.totalInterest;
     r_total_paid.innerText = "₹" + totalPaid.toLocaleString();
   }
 
   // ----------------------
-  // Render Table
+  // Table Renderer
   // ----------------------
   function renderTable(rows) {
     scheduleTableBody.innerHTML = "";
@@ -157,7 +153,7 @@
   }
 
   // ----------------------
-  // Calculate + Render
+  // Calculate Button
   // ----------------------
   let schedule = [];
   let summary = {};
@@ -178,8 +174,7 @@
         emi: EMI,
         rate,
         months: out.months,
-        totalInterest: out.totalInterest,
-        totalPrincipalPaid: out.totalPrincipalPaid
+        totalInterest: out.totalInterest
       };
 
       renderSummary(summary);
@@ -193,7 +188,7 @@
   calculateBtn.addEventListener("click", calculate);
 
   // ----------------------
-  // Excel Download
+  // Excel Export
   // ----------------------
   downloadExcelBtn.addEventListener("click", () => {
     if (!schedule.length) return alert("Please calculate first.");
@@ -226,7 +221,7 @@
   });
 
   // ----------------------
-  // PDF Download
+  // PDF Export
   // ----------------------
   downloadPdfBtn.addEventListener("click", async () => {
     if (!schedule.length) return alert("Please calculate first.");
@@ -238,11 +233,10 @@
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p','pt','a4');
 
-    const pageWidth = pdf.internal.pageSize.width - 40;
+    const width = pdf.internal.pageSize.width - 40;
+    const height = (canvas.height * width) / canvas.width;
 
-    const scaledHeight = (canvas.height * pageWidth) / canvas.width;
-
-    pdf.addImage(img, "PNG", 20, 20, pageWidth, scaledHeight);
+    pdf.addImage(img, "PNG", 20, 20, width, height);
     pdf.save(`EMI_Schedule_${summary.principal}.pdf`);
   });
 
