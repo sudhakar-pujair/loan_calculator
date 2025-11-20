@@ -127,9 +127,15 @@ label{
   justify-content:center;
 }
 
-.btn.primary{
-  background:var(--primary);
-  color:white;
+.btn.primary {
+  background: #eee;      /* same as other buttons */
+  color: #333;           /* dark text */
+  border: 1px solid #ccc;
+}
+
+/* Optional hover effect (same style for all buttons) */
+.btn:hover {
+  background: #ddd;
 }
 
 /* SUMMARY BOXES */
