@@ -1,73 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan EMI Calculator</title>
-
-    <!-- SheetJS for Excel Generation -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <meta charset="UTF-8" />
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f5f7;
-            display: flex;
-            justify-content: center;
-            padding-top: 60px;
-        }
-
-        .container {
-            background: white;
-            width: 420px;
-            padding: 25px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 25px;
-        }
-
-        label {
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 18px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .success {
-            margin-top: 20px;
-            padding: 12px;
-            color: green;
-            border: 1px solid green;
-            background: #eaffea;
-            border-radius: 6px;
-            display: none;
-        }
-
+        body { font-family: Arial; background: #f3f5f7; padding: 60px; display: flex; justify-content: center; }
+        .container { background: white; padding: 25px; width: 420px; border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        h2 { text-align: center; margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin-bottom: 18px; font-size: 16px; }
+        label { font-weight: bold; }
+        button { width: 100%; padding: 12px; background: #007bff; border: none; color: white;
+                 font-size: 16px; cursor: pointer; border-radius: 6px; }
     </style>
 </head>
 
@@ -84,99 +29,28 @@
         <label>Annual Interest Rate (%)</label>
         <input id="rate" type="number">
 
-        <button onclick="generateExcel()">Generate EMI Excel</button>
-
-        <div id="successBox" class="success"></div>
+        <button onclick="goToResult()">Calculate</button>
     </div>
 
     <script>
-        function generateExcel() {
-            const principal = Number(document.getElementById("principal").value);
-            const emi = Number(document.getElementById("emi").value);
-            const rate = Number(document.getElementById("rate").value);
-
-            const successBox = document.getElementById("successBox");
-            successBox.style.display = "none";
+        function goToResult() {
+            const principal = document.getElementById("principal").value;
+            const emi = document.getElementById("emi").value;
+            const rate = document.getElementById("rate").value;
 
             if (!principal || !emi || !rate) {
-                alert("Please enter all fields!");
+                alert("Please fill all fields!");
                 return;
             }
 
-            let balance = principal;
-            const monthlyRate = rate / 12 / 100;
-            let month = 0;
-            let lastEmi = emi;
+            // Save values for next page
+            localStorage.setItem("principal", principal);
+            localStorage.setItem("emi", emi);
+            localStorage.setItem("rate", rate);
 
-            let firstInterest = balance * monthlyRate;
-            if (emi <= firstInterest) {
-                alert("❌ EMI is too low!");
-                return;
-            }
-
-            let rows = [];
-            rows.push(["Month", "Opening Principal", "EMI", "Principal Repaid", "Interest", "Closing Principal"]);
-
-            while (balance > 0) {
-                month++;
-                const interest = balance * monthlyRate;
-
-                let principalRepaid, closingBalance;
-
-                if (balance + interest < emi) {
-                    lastEmi = balance + interest;
-                    principalRepaid = balance;
-                    closingBalance = 0;
-                } else {
-                    principalRepaid = emi - interest;
-                    closingBalance = balance - principalRepaid;
-                    lastEmi = emi;
-                }
-
-                rows.push([
-                    month,
-                    balance.toFixed(2),
-                    lastEmi.toFixed(2),
-                    principalRepaid.toFixed(2),
-                    interest.toFixed(2),
-                    closingBalance.toFixed(2)
-                ]);
-
-                balance = closingBalance;
-            }
-
-            const totalInterestPaid = (emi * (month - 1) + lastEmi) - principal;
-
-            // Create workbook
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(rows);
-
-            // Add summary values
-            ws["H5"] = { v: "Principal Amount:" };
-            ws["I5"] = { v: principal };
-
-            ws["H6"] = { v: "EMI Amount:" };
-            ws["I6"] = { v: emi };
-
-            ws["H7"] = { v: "Interest Rate:" };
-            ws["I7"] = { v: rate + "%" };
-
-            ws["H9"] = { v: "Total Months:" };
-            ws["I9"] = { v: month };
-
-            ws["H10"] = { v: "Total Interest Paid:" };
-            ws["I10"] = { v: totalInterestPaid.toFixed(2) };
-
-            XLSX.utils.book_append_sheet(wb, ws, "EMI Schedule");
-
-            // Download Excel
-            const fileName = `emi_schedule_${principal}.xlsx`;
-            XLSX.writeFile(wb, fileName);
-
-            successBox.innerHTML = "✅ Downloaded: " + fileName;
-            successBox.style.display = "block";
+            // Redirect to result page
+            window.location.href = "result.html";
         }
     </script>
-
 </body>
 </html>
