@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>EMI Calculator — Pro</title>
 
   <link rel="stylesheet" href="style.css">
@@ -20,7 +21,7 @@
 
 <body>
 
-<!-- THEME SWITCH BUTTON (TOP RIGHT) -->
+<!-- THEME SWITCH (TOP RIGHT) -->
 <div class="theme-btn-container">
   <label class="theme-switch">
     <input id="themeToggle" type="checkbox" checked>
@@ -29,15 +30,10 @@
   <div id="themeLabel" class="theme-label">Dark</div>
 </div>
 
-<!-- SIDEBAR COLLAPSE BUTTON -->
-<button id="toggleSidebar" class="collapse-btn">
-  <i class="fas fa-bars"></i>
-</button>
-
 <!-- MAIN LAYOUT -->
 <div class="layout">
 
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR (STATIC) -->
   <aside id="sidebar" class="sidebar">
 
     <div class="brand">
@@ -48,12 +44,10 @@
       </div>
     </div>
 
-    <!-- Input collapsible header -->
     <button id="toggleInputCard" class="card-toggle">
       <i class="fas fa-chevron-down"></i> Loan Inputs
     </button>
 
-    <!-- Input card -->
     <div class="input-card" id="inputCard">
 
       <div class="form-group">
@@ -75,7 +69,6 @@
 
     <div class="sidebar-spacer"></div>
 
-    <!-- Buttons -->
     <div class="actions">
       <button id="calculate" class="btn primary">
         <i class="fas fa-play"></i> Calculate
@@ -92,10 +85,9 @@
 
   </aside>
 
-  <!-- MAIN CONTENT AREA -->
+  <!-- MAIN CONTENT -->
   <main class="main">
 
-    <!-- Summary -->
     <section class="card summary-card">
       <div class="summary-grid">
 
@@ -132,7 +124,6 @@
       </div>
     </section>
 
-    <!-- EMI Table -->
     <section class="card table-card">
       <h3 class="table-title">EMI Schedule</h3>
 
@@ -160,5 +151,6 @@
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>

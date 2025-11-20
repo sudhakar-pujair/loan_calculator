@@ -17,14 +17,12 @@
   const r_interest = document.getElementById('r_interest');
   const r_total_paid = document.getElementById('r_total_paid');
 
-  const sidebar = document.getElementById("sidebar");
-  const toggleSidebarBtn = document.getElementById("toggleSidebar");
-  const themeToggle = document.getElementById("themeToggle");
-  const themeLabel = document.getElementById("themeLabel");
-
   /* -------------------------
      THEME TOGGLE
   -------------------------- */
+  const themeToggle = document.getElementById("themeToggle");
+  const themeLabel = document.getElementById("themeLabel");
+
   themeToggle.onclick = () => {
     if (themeToggle.checked) {
       document.body.classList.remove("light");
@@ -33,13 +31,6 @@
       document.body.classList.add("light");
       themeLabel.innerText = "Light";
     }
-  };
-
-  /* -------------------------
-     SIDEBAR COLLAPSE
-  -------------------------- */
-  toggleSidebarBtn.onclick = () => {
-    sidebar.classList.toggle("collapsed");
   };
 
   /* -------------------------
