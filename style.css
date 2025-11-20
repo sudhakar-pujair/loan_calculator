@@ -1,4 +1,6 @@
-/* No spinner arrows for number inputs */
+/* ---------------------------------------------
+   REMOVE NUMBER INPUT ARROWS
+---------------------------------------------- */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -8,48 +10,88 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-/* Layout */
+/* ---------------------------------------------
+   BASE PAGE
+---------------------------------------------- */
 body{
   margin:0;
   display:flex;
   height:100vh;
-  font-family: Arial;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
   background:#0f1724;
   color:white;
 }
 
-/* Collapse button */
+/* ---------------------------------------------
+   COLLAPSE BUTTON
+---------------------------------------------- */
 .collapse-btn{
-  position:absolute;
-  top:10px;
-  left:10px;
+  position:fixed;
+  top:15px;
+  left:15px;
   padding:10px 12px;
   background:#1e2635;
   color:white;
   cursor:pointer;
   border-radius:6px;
-  z-index:100;
+  z-index:200; /* stays on top */
 }
-.collapse-btn:hover{ background:#2d3b55; }
+.collapse-btn:hover{
+  background:#2d3b55;
+}
 
-/* Sidebar */
+/* ---------------------------------------------
+   LEFT SIDEBAR (FIXED)
+---------------------------------------------- */
 .sidebar{
   width:260px;
-  background:linear-gradient(180deg,#1b2a4a,#0f1724);
+  background:linear-gradient(180deg,#1e2a4a,#0d1424);
   padding:20px;
   display:flex;
   flex-direction:column;
   gap:20px;
-  transition:0.3s;
+  position:fixed;  /* FIXED so it doesn't overlay dynamically */
+  top:0;
+  left:0;
+  bottom:0;
   border-right:1px solid #23304d;
+  transition:0.3s;
+  overflow-y:auto;
+  z-index:50;
 }
+
+.sidebar h2{
+  margin:0;
+  font-size:22px;
+  text-align:center;
+}
+
+/* COLLAPSED SIDEBAR */
 .sidebar.collapsed{
   width:0px;
   padding:0;
   overflow:hidden;
 }
 
-/* Fancy Card around inputs */
+/* ---------------------------------------------
+   MAIN CONTENT — shifts right
+---------------------------------------------- */
+.main{
+  flex:1;
+  padding:20px;
+  margin-left:260px;   /* shifts to right */
+  transition: margin-left .3s;
+  overflow-y:auto;
+}
+
+.sidebar.collapsed ~ .main {
+  margin-left:0 !important;
+}
+
+/* ---------------------------------------------
+   FANCY INPUT CARD
+---------------------------------------------- */
 .input-card{
   padding:20px;
   background:rgba(255,255,255,0.06);
@@ -60,6 +102,7 @@ body{
 
 /* Inputs */
 .form-group{
+  width:100%;
   margin-bottom:16px;
 }
 label{
@@ -77,27 +120,35 @@ input{
   border:1px solid #3a4661;
   color:white;
 }
+input:focus{
+  outline:none;
+  border-color:#4F8CFF;
+}
 
-/* Buttons */
+/* ---------------------------------------------
+   BUTTONS WITH ICONS
+---------------------------------------------- */
 .actions{
   margin-top:auto;
   display:flex;
   flex-direction:column;
   gap:12px;
 }
+
 .btn{
   width:100%;
   height:40px;
+  border-radius:6px;
   background:#1e2635;
   border:1px solid #3a4661;
   color:white;
-  cursor:pointer;
-  border-radius:6px;
   font-weight:bold;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
+  cursor:pointer;
+  transition:0.2s;
 }
 .btn:hover{
   background:#2d3b55;
@@ -111,44 +162,60 @@ input{
   background:#0053cc;
 }
 
-/* MAIN AREA */
-.main{
-  flex:1;
-  padding:20px;
-  overflow:auto;
-}
-
-/* Summary */
+/* ---------------------------------------------
+   SUMMARY CARDS
+---------------------------------------------- */
 .card{
   background:#0b1220;
   padding:20px;
   border-radius:12px;
-  margin-bottom:20px;
   border:1px solid #23304d;
+  margin-bottom:20px;
 }
+
 .summary-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:12px;
 }
+
 .summary-item{
   padding:12px;
   border:1px solid #23304d;
   border-radius:8px;
 }
-.label{ color:#8ea2c2; }
-.value{ font-size:20px; font-weight:bold; }
+.summary-item .label{
+  color:#8ea2c2;
+  font-size:13px;
+}
+.summary-item .value{
+  font-size:20px;
+  font-weight:bold;
+}
 
-/* Table */
-.table-wrap{ overflow:auto; }
+/* ---------------------------------------------
+   TABLE
+---------------------------------------------- */
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
 th{
   background:#2b5f8a;
   color:white;
   padding:8px;
 }
+
 td{
   border:1px solid #23304d;
   padding:8px;
   text-align:right;
 }
-td:first-child{ text-align:center; }
+td:first-child{
+  text-align:center;
+}
