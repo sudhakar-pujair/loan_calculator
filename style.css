@@ -71,11 +71,13 @@ body{
    INPUT ROW (GAP + SMALLER WIDTH + MATCHED HEIGHT)
 --------------------------------------------- */
 
-.form-row{
-  display:flex;
-  gap:28px;                 /* space between input boxes */
-  align-items:flex-start;
-  flex-wrap:wrap;
+.form-row {
+  display: flex;
+  justify-content: center;   /* ⬅️ CENTER ALL INPUTS + BUTTONS */
+  gap: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 /* Reduce width of input boxes */
