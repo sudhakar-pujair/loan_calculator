@@ -19,55 +19,58 @@ h1, h2 {
     color: #333;
 }
 
-/* ============================
-   SINGLE ROW INPUT LAYOUT
-=============================== */
+/* ============================================
+   SMALL INPUT BOXES — SINGLE ROW
+============================================= */
 
 .form-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 30px;
     flex-wrap: wrap;
 }
 
 .form-group {
     flex: 1;
-    min-width: 200px;
+    min-width: 160px;
 }
 
 label {
     font-weight: bold;
-    display: block;
-    margin-bottom: 6px;
+    font-size: 14px;
+    margin-bottom: 4px;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
+    padding: 6px 8px;   /* reduced size */
+    font-size: 14px;
+    height: 32px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
 }
 
 .calculate-btn {
-    height: 48px;
-    padding: 0 25px;
+    height: 36px;       /* smaller */
+    padding: 0 18px;
     background: #0066ff;
     color: white;
     border: none;
-    font-size: 18px;
-    border-radius: 5px;
-    white-space: nowrap;
+    font-size: 14px;
+    border-radius: 4px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .calculate-btn:hover {
     background: #004fcc;
 }
 
-/* ============================
-   Table Styling
-=============================== */
+/* ============================================
+   TABLE STYLING
+============================================= */
 
 table {
     width: 100%;
@@ -94,10 +97,10 @@ th {
 #downloadExcel {
     width: 100%;
     padding: 12px;
-    margin-top: 18px;
     background: green;
     color: white;
     font-size: 18px;
+    margin-top: 20px;
     border: none;
     border-radius: 5px;
 }
