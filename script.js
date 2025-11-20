@@ -1,20 +1,19 @@
-// ----------------------------
-// EMI Calculator (NO CHARTS)
-// ----------------------------
+// ------------------------------------------------------
+// EMI CALCULATOR – FULL JS WITH SIDEBAR COLLAPSE
+// ------------------------------------------------------
 (() => {
 
+  // Inputs
   const principalEl = document.getElementById('principal');
   const emiEl = document.getElementById('emi');
   const rateEl = document.getElementById('rate');
 
+  // Buttons
   const calculateBtn = document.getElementById('calculate');
   const downloadExcelBtn = document.getElementById('downloadExcel');
   const downloadPdfBtn = document.getElementById('downloadPdf');
 
-  const errPrincipal = document.getElementById('errPrincipal');
-  const errEmi = document.getElementById('errEmi');
-  const errRate = document.getElementById('errRate');
-
+  // Summary fields
   const r_principal = document.getElementById('r_principal');
   const r_emi = document.getElementById('r_emi');
   const r_rate = document.getElementById('r_rate');
@@ -22,74 +21,65 @@
   const r_interest = document.getElementById('r_interest');
   const r_total_paid = document.getElementById('r_total_paid');
 
-  const scheduleTableBody = document.querySelector('#scheduleTable tbody');
+  // Table body
+  const tableBody = document.querySelector('#scheduleTable tbody');
 
-  // ----------------------
+  // ------------------------------------------------------
   // DARK THEME DEFAULT
-  // ----------------------
+  // ------------------------------------------------------
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
-  const savedTheme = localStorage.getItem("theme") || "dark";
 
-  document.documentElement.setAttribute('data-theme', savedTheme);
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
   themeToggle.checked = savedTheme === "dark";
   themeLabel.innerText = savedTheme === "dark" ? "Dark" : "Light";
 
   themeToggle.addEventListener("change", () => {
     const mode = themeToggle.checked ? "dark" : "light";
-    document.documentElement.setAttribute('data-theme', mode);
-    themeLabel.innerText = mode === "dark" ? "Dark" : "Light";
+    document.documentElement.setAttribute("data-theme", mode);
     localStorage.setItem("theme", mode);
+    themeLabel.innerText = mode === "dark" ? "Dark" : "Light";
   });
 
-  // ----------------------
-  // Validation
-  // ----------------------
+  // ------------------------------------------------------
+  // Validate Inputs
+  // ------------------------------------------------------
   function validate(P, EMI, rate) {
-    let ok = true;
-
-    errPrincipal.innerText = "";
-    errEmi.innerText = "";
-    errRate.innerText = "";
-
     if (!P || P <= 0) {
-      errPrincipal.innerText = "Enter valid principal";
-      ok = false;
+      alert("Please enter valid Principal");
+      return false;
     }
-
     if (!EMI || EMI <= 0) {
-      errEmi.innerText = "Enter valid EMI";
-      ok = false;
+      alert("Please enter valid EMI");
+      return false;
     }
-
     if (!rate || rate <= 0) {
-      errRate.innerText = "Enter valid interest rate";
-      ok = false;
+      alert("Please enter valid Interest Rate");
+      return false;
     }
-
-    return ok;
+    return true;
   }
 
-  // ----------------------
-  // Build Schedule
-  // ----------------------
+  // ------------------------------------------------------
+  // Build EMI Schedule
+  // ------------------------------------------------------
   function buildSchedule(P, EMI, rate) {
-    const mRate = rate / 12 / 100;
+    const monthlyRate = rate / 12 / 100;
     let balance = P;
     let month = 0;
-
-    const firstInterest = balance * mRate;
-    if (EMI <= firstInterest) {
-      throw new Error("EMI too low! First month interest is ₹" + firstInterest.toFixed(2));
-    }
-
-    const rows = [];
     let totalInterest = 0;
+    const rows = [];
+
+    const firstInterest = balance * monthlyRate;
+    if (EMI <= firstInterest) {
+      throw new Error("EMI too low! First month interest: ₹" + firstInterest.toFixed(2));
+    }
 
     while (balance > 0) {
       month++;
 
-      const interest = balance * mRate;
+      const interest = balance * monthlyRate;
       let principalRepaid = EMI - interest;
       let closing = balance - principalRepaid;
 
@@ -118,9 +108,9 @@
     };
   }
 
-  // ----------------------
+  // ------------------------------------------------------
   // Render Summary
-  // ----------------------
+  // ------------------------------------------------------
   function renderSummary(sum) {
     r_principal.innerText = "₹" + sum.principal.toLocaleString();
     r_emi.innerText = "₹" + sum.emi.toLocaleString();
@@ -132,30 +122,31 @@
     r_total_paid.innerText = "₹" + totalPaid.toLocaleString();
   }
 
-  // ----------------------
-  // Render Table
-  // ----------------------
+  // ------------------------------------------------------
+  // Render EMI Schedule Table
+  // ------------------------------------------------------
   function renderTable(rows) {
-    scheduleTableBody.innerHTML = "";
+    tableBody.innerHTML = "";
+
     rows.forEach(r => {
-      scheduleTableBody.innerHTML += `
-        <tr>
-          <td>${r.month}</td>
-          <td>₹${r.opening.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-          <td>₹${r.emi.toLocaleString()}</td>
-          <td>₹${r.principalRepaid.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-          <td>₹${r.interest.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-          <td>₹${r.closing.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-        </tr>
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.month}</td>
+        <td>₹${r.opening.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+        <td>₹${r.emi.toLocaleString()}</td>
+        <td>₹${r.principalRepaid.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+        <td>₹${r.interest.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+        <td>₹${r.closing.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
       `;
+      tableBody.appendChild(tr);
     });
   }
 
-  // ----------------------
-  // Calculate EMI Button
-  // ----------------------
-  let schedule = [];
-  let summary = {};
+  // ------------------------------------------------------
+  // CALCULATE BUTTON
+  // ------------------------------------------------------
+  let scheduleData = [];
+  let summaryData = {};
 
   function calculate() {
     const P = Number(principalEl.value);
@@ -167,8 +158,8 @@
     try {
       const out = buildSchedule(P, EMI, rate);
 
-      schedule = out.rows;
-      summary = {
+      scheduleData = out.rows;
+      summaryData = {
         principal: P,
         emi: EMI,
         rate,
@@ -176,67 +167,78 @@
         totalInterest: out.totalInterest
       };
 
-      renderSummary(summary);
-      renderTable(schedule);
+      renderSummary(summaryData);
+      renderTable(scheduleData);
 
-    } catch (err) {
-      alert(err.message);
+    } catch (e) {
+      alert(e.message);
     }
   }
 
   calculateBtn.addEventListener("click", calculate);
 
-  // ----------------------
-  // Excel Export
-  // ----------------------
+  // ------------------------------------------------------
+  // EXCEL DOWNLOAD
+  // ------------------------------------------------------
   downloadExcelBtn.addEventListener("click", () => {
-    if (!schedule.length) return alert("Please calculate first.");
+    if (!scheduleData.length) return alert("Calculate first.");
 
     const wb = XLSX.utils.book_new();
 
+    // Summary sheet
     const ws1 = XLSX.utils.aoa_to_sheet([
       ["Loan EMI Summary"],
       [],
-      ["Principal", summary.principal],
-      ["EMI", summary.emi],
-      ["Interest Rate", summary.rate + "%"],
-      ["Total Months", summary.months],
-      ["Total Interest Paid", summary.totalInterest],
-      ["Total Paid Amount", summary.principal + summary.totalInterest]
+      ["Principal", summaryData.principal],
+      ["EMI", summaryData.emi],
+      ["Interest Rate", summaryData.rate + "%"],
+      ["Total Months", summaryData.months],
+      ["Total Interest Paid", summaryData.totalInterest],
+      ["Total Paid Amount", summaryData.principal + summaryData.totalInterest]
     ]);
-
     XLSX.utils.book_append_sheet(wb, ws1, "Summary");
 
+    // Schedule sheet
     const ws2 = XLSX.utils.aoa_to_sheet([
       ["Month","Opening Principal","EMI","Principal Repaid","Interest","Closing Principal"],
-      ...schedule.map(r => [
+      ...scheduleData.map(r => [
         r.month, r.opening, r.emi, r.principalRepaid, r.interest, r.closing
       ])
     ]);
-
     XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
 
-    XLSX.writeFile(wb, `EMI_Schedule_${summary.principal}.xlsx`);
+    XLSX.writeFile(wb, `EMI_Schedule_${summaryData.principal}.xlsx`);
   });
 
-  // ----------------------
-  // PDF Export
-  // ----------------------
+  // ------------------------------------------------------
+  // PDF DOWNLOAD
+  // ------------------------------------------------------
   downloadPdfBtn.addEventListener("click", async () => {
-    if (!schedule.length) return alert("Please calculate first.");
+    if (!scheduleData.length) return alert("Calculate first.");
 
     const target = document.getElementById("pdfContent");
+
     const canvas = await html2canvas(target);
     const img = canvas.toDataURL("image/png");
 
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p','pt','a4');
+    const pdf = new jsPDF("p", "pt", "a4");
 
     const width = pdf.internal.pageSize.width - 40;
     const height = (canvas.height * width) / canvas.width;
 
     pdf.addImage(img, "PNG", 20, 20, width, height);
-    pdf.save(`EMI_Schedule_${summary.principal}.pdf`);
+    pdf.save(`EMI_Schedule_${summaryData.principal}.pdf`);
+  });
+
+  // ------------------------------------------------------
+  // SIDEBAR COLLAPSE
+  // ------------------------------------------------------
+  const sidebar = document.getElementById("sidebar");
+  const toggleSidebar = document.getElementById("toggleSidebar");
+
+  toggleSidebar.addEventListener("click", () => {
+    sidebar.classList.toggle("collapsed");
   });
 
 })();

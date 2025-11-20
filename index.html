@@ -7,57 +7,67 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Excel -->
+  <!-- Excel Export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-  <!-- PDF -->
+  <!-- PDF Export -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Icons (FontAwesome) -->
+  <script src="https://kit.fontawesome.com/a2e860a91f.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-<!-- LEFT SIDEBAR -->
-<div class="sidebar">
+<!-- COLLAPSE BUTTON -->
+<div class="collapse-btn" id="toggleSidebar">
+  <i class="fas fa-bars"></i>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
 
   <h2>EMI Calculator</h2>
 
-  <!-- Theme Switch -->
-  <label class="switch">
-    <input id="themeToggle" type="checkbox" />
-    <span class="slider"></span>
-  </label>
-  <span id="themeLabel">Dark</span>
+  <!-- Fancy Card for Inputs -->
+  <div class="input-card">
 
-  <!-- Inputs -->
-  <div class="form-group">
-    <label>Principal (₹)</label>
-    <input id="principal" type="number" placeholder="1429094">
-    <div id="errPrincipal" class="error"></div>
+    <div class="form-group">
+      <label>Principal (₹)</label>
+      <input id="principal" type="number" placeholder="1429094">
+    </div>
+
+    <div class="form-group">
+      <label>EMI (₹)</label>
+      <input id="emi" type="number" placeholder="100000">
+    </div>
+
+    <div class="form-group">
+      <label>Interest Rate (%)</label>
+      <input id="rate" type="number" step="0.01" placeholder="14">
+    </div>
+
   </div>
 
-  <div class="form-group">
-    <label>EMI (₹)</label>
-    <input id="emi" type="number" placeholder="100000">
-    <div id="errEmi" class="error"></div>
-  </div>
-
-  <div class="form-group">
-    <label>Interest Rate (%)</label>
-    <input id="rate" type="number" step="0.01" placeholder="14">
-    <div id="errRate" class="error"></div>
-  </div>
-
-  <!-- Buttons at bottom -->
+  <!-- Buttons with Icons -->
   <div class="actions">
-    <button type="button" class="btn primary" id="calculate">Calculate</button>
-    <button type="button" class="btn" id="downloadExcel">Download Excel</button>
-    <button type="button" class="btn" id="downloadPdf">Download PDF</button>
+    <button type="button" class="btn primary" id="calculate">
+      <i class="fas fa-play"></i> Calculate
+    </button>
+
+    <button type="button" class="btn" id="downloadExcel">
+      <i class="fas fa-file-excel"></i> Excel
+    </button>
+
+    <button type="button" class="btn" id="downloadPdf">
+      <i class="fas fa-file-pdf"></i> PDF
+    </button>
   </div>
 
 </div>
 
-<!-- RIGHT CONTENT AREA -->
+<!-- MAIN CONTENT -->
 <div class="main">
 
   <!-- Summary -->
@@ -65,30 +75,12 @@
     <h3 style="text-align:center;">Result Summary</h3>
 
     <div class="summary-grid">
-      <div class="summary-item">
-        <div class="label">Principal</div>
-        <div class="value" id="r_principal">—</div>
-      </div>
-      <div class="summary-item">
-        <div class="label">EMI</div>
-        <div class="value" id="r_emi">—</div>
-      </div>
-      <div class="summary-item">
-        <div class="label">Interest Rate</div>
-        <div class="value" id="r_rate">—</div>
-      </div>
-      <div class="summary-item">
-        <div class="label">Total Months</div>
-        <div class="value" id="r_months">—</div>
-      </div>
-      <div class="summary-item">
-        <div class="label">Total Interest Paid</div>
-        <div class="value" id="r_interest">—</div>
-      </div>
-      <div class="summary-item">
-        <div class="label">Total Paid Amount</div>
-        <div class="value" id="r_total_paid">—</div>
-      </div>
+      <div class="summary-item"><div class="label">Principal</div><div class="value" id="r_principal">—</div></div>
+      <div class="summary-item"><div class="label">EMI</div><div class="value" id="r_emi">—</div></div>
+      <div class="summary-item"><div class="label">Interest Rate</div><div class="value" id="r_rate">—</div></div>
+      <div class="summary-item"><div class="label">Total Months</div><div class="value" id="r_months">—</div></div>
+      <div class="summary-item"><div class="label">Total Interest</div><div class="value" id="r_interest">—</div></div>
+      <div class="summary-item"><div class="label">Total Paid Amount</div><div class="value" id="r_total_paid">—</div></div>
     </div>
   </section>
 
