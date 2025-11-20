@@ -22,16 +22,17 @@
     <p class="muted">Calculate EMI Schedule, Export Excel & PDF</p>
   </div>
 
+  <!-- Theme Toggle -->
   <label class="switch">
     <input id="themeToggle" type="checkbox" />
     <span class="slider"></span>
   </label>
-  <span class="theme-label" id="themeLabel">Light</span>
+  <span class="theme-label" id="themeLabel">Dark</span>
 </div>
 
 <main class="container">
 
-  <!-- INPUT CARD -->
+  <!-- INPUT ROW -->
   <section class="card">
     <form id="emiForm" class="form-row" autocomplete="off">
 
@@ -53,6 +54,7 @@
         <div class="error" id="errRate"></div>
       </div>
 
+      <!-- BUTTONS -->
       <div class="actions">
         <button type="button" class="btn primary" id="calculate">Calculate</button>
         <button type="button" class="btn" id="downloadExcel">Download Excel</button>
@@ -62,7 +64,7 @@
     </form>
   </section>
 
-  <!-- SUMMARY CARD -->
+  <!-- SUMMARY SECTION -->
   <section class="card">
     <div class="summary-grid">
 
@@ -101,7 +103,7 @@
 
   <!-- SCHEDULE TABLE -->
   <section class="card">
-    <h3>EMI Schedule</h3>
+    <h3 style="text-align:center;">EMI Schedule</h3>
 
     <div class="table-wrap" id="pdfContent">
       <table id="scheduleTable">

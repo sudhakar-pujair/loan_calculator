@@ -25,11 +25,11 @@
   const scheduleTableBody = document.querySelector('#scheduleTable tbody');
 
   // ----------------------
-  // Theme switching
+  // DARK THEME DEFAULT
   // ----------------------
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
-  const savedTheme = localStorage.getItem("theme") || "light";
+  const savedTheme = localStorage.getItem("theme") || "dark";
 
   document.documentElement.setAttribute('data-theme', savedTheme);
   themeToggle.checked = savedTheme === "dark";
@@ -71,7 +71,7 @@
   }
 
   // ----------------------
-  // Build EMI Schedule
+  // Build Schedule
   // ----------------------
   function buildSchedule(P, EMI, rate) {
     const mRate = rate / 12 / 100;
@@ -119,7 +119,7 @@
   }
 
   // ----------------------
-  // Summary Renderer
+  // Render Summary
   // ----------------------
   function renderSummary(sum) {
     r_principal.innerText = "₹" + sum.principal.toLocaleString();
@@ -128,13 +128,12 @@
     r_months.innerText = sum.months;
     r_interest.innerText = "₹" + sum.totalInterest.toLocaleString();
 
-    // ⭐ Correct Total Paid
     const totalPaid = sum.principal + sum.totalInterest;
     r_total_paid.innerText = "₹" + totalPaid.toLocaleString();
   }
 
   // ----------------------
-  // Table Renderer
+  // Render Table
   // ----------------------
   function renderTable(rows) {
     scheduleTableBody.innerHTML = "";
@@ -153,7 +152,7 @@
   }
 
   // ----------------------
-  // Calculate Button
+  // Calculate EMI Button
   // ----------------------
   let schedule = [];
   let summary = {};

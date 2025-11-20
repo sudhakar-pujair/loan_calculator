@@ -1,15 +1,5 @@
+/* DARK THEME BY DEFAULT */
 :root{
-  --bg:#f4f6fb;
-  --card:#fff;
-  --text:#222;
-  --muted:#666;
-  --primary:#0066ff;
-  --accent:#4F81BD;
-  --shadow: 0 6px 18px rgba(30,30,80,0.06);
-  --radius:10px;
-}
-
-[data-theme="dark"]{
   --bg: #0f1724;
   --card: #0b1220;
   --text: #e6eef8;
@@ -17,6 +7,18 @@
   --primary:#4F8CFF;
   --accent:#2b5f8a;
   --shadow: 0 6px 18px rgba(0,0,0,0.5);
+  --radius:10px;
+}
+
+/* LIGHT THEME WHEN TOGGLED */
+[data-theme="light"]{
+  --bg:#f4f6fb;
+  --card:#fff;
+  --text:#222;
+  --muted:#666;
+  --primary:#0066ff;
+  --accent:#4F81BD;
+  --shadow: 0 6px 18px rgba(30,30,80,0.06);
 }
 
 /* PAGE */
@@ -56,7 +58,6 @@ body{
 .switch input:checked + .slider{background:var(--primary)}
 .switch input:checked + .slider:before{transform:translateX(22px)}
 
-/* MAIN LAYOUT */
 .container{
   max-width:1100px;
   margin:auto;
@@ -71,31 +72,39 @@ body{
 }
 
 /* --------------------------------------------
-   INPUT ROW — centered, gap, small width, equal height
+   INPUT ROW — CENTERED
 --------------------------------------------- */
 .form-row{
   display:flex;
-  justify-content:center;      /* CENTER EVERYTHING */
-  gap:28px;                    /* space between input boxes */
+  justify-content:center;
+  gap:28px;
   align-items:flex-start;
   flex-wrap:wrap;
   width:100%;
 }
 
-/* Reduce width of input boxes */
+/* SMALLER WIDTH INPUTS */
 .form-group{
-  flex:0 0 150px;              /* smaller width */
+  flex:0 0 150px;
 }
 
-/* INPUT HEIGHT = BUTTON HEIGHT */
+/* MATCH INPUT HEIGHT TO BUTTON HEIGHT */
 input{
   width:100%;
-  height:36px;                 /* SAME height as buttons */
+  height:36px;
   padding:5px 8px;
   font-size:14px;
   border-radius:5px;
   border:1px solid #ccc;
+  background:#fff;
+  color:#000;
   box-sizing:border-box;
+}
+
+[data-theme="dark"] input{
+  background:#1a2537;
+  color:#e6eef8;
+  border:1px solid #444;
 }
 
 label{
@@ -106,9 +115,8 @@ label{
 }
 
 /* --------------------------------------------
-   BUTTONS — SAME style for all buttons
+   BUTTONS — SAME COLOR FOR ALL
 --------------------------------------------- */
-
 .actions{
   display:flex;
   gap:10px;
@@ -116,7 +124,6 @@ label{
   margin-top:0px;
 }
 
-/* All buttons same color now */
 .btn{
   height:36px;
   padding:0 16px;
@@ -131,16 +138,31 @@ label{
   color:#333;
 }
 
-/* Hover effect */
+[data-theme="dark"] .btn{
+  background:#1e2635;
+  border:1px solid #555;
+  color:#e6eef8;
+}
+
 .btn:hover{
   background:#ddd;
 }
 
-/* Remove blue color from calculate button */
+[data-theme="dark"] .btn:hover{
+  background:#2d3b55;
+}
+
+/* SAME COLOR AS OTHER BUTTONS */
 .btn.primary{
-  background:#eee;     /* same as others */
+  background:#eee;
   color:#333;
   border:1px solid #ccc;
+}
+
+[data-theme="dark"] .btn.primary{
+  background:#1e2635;
+  color:#e6eef8;
+  border:1px solid #555;
 }
 
 /* --------------------------------------------
@@ -156,6 +178,10 @@ label{
   padding:10px;
   border:1px solid #ddd;
   border-radius:6px;
+}
+
+[data-theme="dark"] .summary-item{
+  border:1px solid #3a4661;
 }
 
 .summary-item .label{
@@ -191,6 +217,10 @@ td{
   border:1px solid #ccc;
   padding:8px;
   text-align:right;
+}
+
+[data-theme="dark"] td{
+  border-color:#3a4661;
 }
 
 td:first-child{
