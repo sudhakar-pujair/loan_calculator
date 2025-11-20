@@ -1,32 +1,38 @@
-# 📘 Loan EMI Calculator (Frontend Only)
+# EMI Calculator (HTML + CSS + JavaScript)
 
-A fully client-side **Loan EMI Calculator** built using **HTML, CSS, and JavaScript**.  
-This app generates a complete **EMI Amortization Schedule** and allows users to **download the result as an Excel (.xlsx) file** — directly in the browser.
+This project is a simple EMI (Equated Monthly Installment) Calculator built using:
+- HTML
+- CSS
+- JavaScript
 
-🔥 No backend required  
-🔥 Works entirely offline  
-🚀 Deployed using GitHub Pages  
-📊 Excel file generated using **SheetJS (XLSX.js)**
-
----
-
-## ✨ Features
-
-- ✔ Calculate EMI schedule using:
-  - Principal Amount  
-  - EMI Amount  
-  - Annual Interest Rate  
-- ✔ Auto-generate Amortization Table (Month-wise breakup)
-- ✔ Excel file download (`emi_schedule_<principal>.xlsx`)
-- ✔ Summary values added inside Excel:
-  - Total Months  
-  - Total Interest Paid  
-  - Principal / EMI / Rate  
-- ✔ Clean modern UI  
-- ✔ 100% browser-based (no server required)
-- ✔ Perfect for GitHub Pages deployment
+It calculates:
+- Total months to clear the loan
+- Total interest paid
+- EMI repayment schedule (monthly breakdown)
+- Displays results on the same page
 
 ---
 
-## 📁 Project Structure
+## 🚀 How to Run
+
+1. Download or clone the project.
+2. Ensure all files are in the same folder:
+   - index.html
+   - style.css
+   - script.js
+3. Open **index.html** in your browser.
+
+---
+
+## 🌐 Deploy to GitHub Pages
+
+1. Create a GitHub repository.
+2. Upload all files.
+3. Go to **Settings → Pages**.
+4. Under “Source”, select:
+   - **Branch:** main  
+   - **Folder:** root  
+5. Click **Save**.
+
+Your website will be available at:
 
