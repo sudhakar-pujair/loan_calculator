@@ -52,7 +52,6 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
 
         schedule.push(row);
 
-        // Add row to table
         let htmlRow = `
             <tr>
                 <td>${row[0]}</td>
@@ -68,7 +67,6 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
         balance = closingBalance;
     }
 
-    // Save values globally for Excel
     globalSchedule = schedule;
     globalPrincipal = P;
     globalEMI = EMI;
@@ -76,12 +74,10 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
     globalMonths = month;
     globalTotalInterest = totalInterestPaid;
 
-    // Show sections
     document.getElementById("result").classList.remove("hidden");
     document.getElementById("table_title").classList.remove("hidden");
     document.getElementById("scheduleTable").classList.remove("hidden");
 
-    // Show summary
     document.getElementById("r_principal").innerText = P.toLocaleString();
     document.getElementById("r_emi").innerText = EMI.toLocaleString();
     document.getElementById("r_rate").innerText = rate;
@@ -91,32 +87,105 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
 
 
 /* -------------------------
-   DOWNLOAD EXCEL
+   EXCEL DOWNLOAD WITH formatting
 -------------------------- */
 document.getElementById("downloadExcel").addEventListener("click", function () {
 
     let wb = XLSX.utils.book_new();
 
-    /* SUMMARY SHEET */
+    /* ==============================
+       1. SUMMARY SHEET
+    =============================== */
     let summaryData = [
-        ["Principal", `₹${globalPrincipal.toLocaleString()}`],
-        ["EMI", `₹${globalEMI.toLocaleString()}`],
+        ["Summary"],
+        [],
+        ["Principal", globalPrincipal],
+        ["EMI", globalEMI],
         ["Interest Rate", `${globalRate}%`],
         ["Total Months", globalMonths],
-        ["Total Interest Paid", `₹${globalTotalInterest.toFixed(2)}`]
+        ["Total Interest Paid", globalTotalInterest.toFixed(2)]
     ];
 
     let ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+
+    // Style: Bold title
+    ws1["A1"].s = { font: { bold: true, sz: 16 }, alignment: { horizontal: "center" } };
+
+    // Style: Labels bold
+    for (let i = 3; i <= 7; i++) {
+        ws1[`A${i}`].s = { font: { bold: true, sz: 12 } };
+    }
+
+    // Rupee formatting
+    ws1["B3"].s = { numFmt: "₹#,##0.00" };
+    ws1["B4"].s = { numFmt: "₹#,##0.00" };
+    ws1["B7"].s = { numFmt: "₹#,##0.00" };
+
     XLSX.utils.book_append_sheet(wb, ws1, "Summary");
 
-    /* SCHEDULE SHEET */
+
+    /* ==============================
+       2. SCHEDULE SHEET
+    =============================== */
     let header = [
         ["Month", "Opening Principal", "EMI", "Principal Repaid", "Interest", "Closing Principal"]
     ];
 
     let data = header.concat(globalSchedule);
-
     let ws2 = XLSX.utils.aoa_to_sheet(data);
+
+    // BLUE HEADER STYLE
+    const headerStyle = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4F81BD" } },
+        alignment: { horizontal: "center" },
+        border: {
+            top: { style: "thin" }, bottom: { style: "thin" },
+            left: { style: "thin" }, right: { style: "thin" }
+        }
+    };
+
+    // Apply header formatting
+    let cols = ["A", "B", "C", "D", "E", "F"];
+    cols.forEach(col => ws2[col + "1"].s = headerStyle);
+
+    // Data cell formatting
+    const cellStyle = {
+        alignment: { horizontal: "right" },
+        border: {
+            top: { style: "thin" }, bottom: { style: "thin" },
+            left: { style: "thin" }, right: { style: "thin" }
+        },
+        numFmt: "₹#,##0.00"
+    };
+
+    const numberStyle = {
+        alignment: { horizontal: "center" },
+        border: {
+            top: { style: "thin" }, bottom: { style: "thin" },
+            left: { style: "thin" }, right: { style: "thin" }
+        }
+    };
+
+    // Apply formatting to rows
+    for (let r = 2; r <= data.length; r++) {
+        ws2[`A${r}`].s = numberStyle;  // Month
+
+        ["B", "C", "D", "E", "F"].forEach(col => {
+            ws2[`${col}${r}`].s = cellStyle;
+        });
+    }
+
+    // Auto column width
+    ws2["!cols"] = [
+        { wpx: 80 },
+        { wpx: 140 },
+        { wpx: 100 },
+        { wpx: 140 },
+        { wpx: 100 },
+        { wpx: 140 }
+    ];
+
     XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
 
     /* SAVE FILE */
