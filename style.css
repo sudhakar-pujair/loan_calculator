@@ -7,7 +7,7 @@ body {
 .container {
     background: white;
     width: 90%;
-    max-width: 900px;
+    max-width: 1100px;
     margin: auto;
     padding: 25px;
     border-radius: 10px;
@@ -19,15 +19,17 @@ h1, h2 {
     color: #333;
 }
 
-/* ====================
-   Input Row
-===================== */
+/* ============================
+   SINGLE ROW INPUT LAYOUT
+=============================== */
 
 .form-row {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
 }
 
 .form-group {
@@ -38,22 +40,24 @@ h1, h2 {
 label {
     font-weight: bold;
     display: block;
+    margin-bottom: 6px;
 }
 
 input {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+    padding: 10px;
+    font-size: 16px;
 }
 
 .calculate-btn {
-    height: 45px;
-    padding: 0 20px;
+    height: 48px;
+    padding: 0 25px;
     background: #0066ff;
     color: white;
     border: none;
     font-size: 18px;
     border-radius: 5px;
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -61,14 +65,14 @@ input {
     background: #004fcc;
 }
 
-/* ====================
-   Table
-===================== */
+/* ============================
+   Table Styling
+=============================== */
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 th, td {
@@ -83,7 +87,6 @@ th {
     text-align: center;
 }
 
-/* Hidden sections */
 .hidden {
     display: none;
 }
@@ -91,7 +94,7 @@ th {
 #downloadExcel {
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
+    margin-top: 18px;
     background: green;
     color: white;
     font-size: 18px;
