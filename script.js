@@ -5,6 +5,9 @@ let globalRate = 0;
 let globalMonths = 0;
 let globalTotalInterest = 0;
 
+/* ==========================================================
+   EMI CALCULATION
+========================================================== */
 document.getElementById("emiForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -30,6 +33,7 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
 
     while (balance > 0) {
         month++;
+
         let interest = balance * monthlyRate;
         let principalRepaid = EMI - interest;
         let closingBalance = balance - principalRepaid;
@@ -67,6 +71,7 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
         balance = closingBalance;
     }
 
+    // Save globally
     globalSchedule = schedule;
     globalPrincipal = P;
     globalEMI = EMI;
@@ -86,18 +91,18 @@ document.getElementById("emiForm").addEventListener("submit", function (e) {
 });
 
 
-/* -------------------------
-   EXCEL DOWNLOAD WITH formatting
--------------------------- */
+/* ==========================================================
+   EXCEL DOWNLOAD + STYLING
+========================================================== */
 document.getElementById("downloadExcel").addEventListener("click", function () {
 
     let wb = XLSX.utils.book_new();
 
-    /* ==============================
-       1. SUMMARY SHEET
-    =============================== */
+    /* -------------------------
+       SUMMARY SHEET
+    -------------------------- */
     let summaryData = [
-        ["Summary"],
+        ["Loan EMI Summary"],
         [],
         ["Principal", globalPrincipal],
         ["EMI", globalEMI],
@@ -108,15 +113,12 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
 
     let ws1 = XLSX.utils.aoa_to_sheet(summaryData);
 
-    // Style: Bold title
     ws1["A1"].s = { font: { bold: true, sz: 16 }, alignment: { horizontal: "center" } };
 
-    // Style: Labels bold
     for (let i = 3; i <= 7; i++) {
         ws1[`A${i}`].s = { font: { bold: true, sz: 12 } };
     }
 
-    // Rupee formatting
     ws1["B3"].s = { numFmt: "₹#,##0.00" };
     ws1["B4"].s = { numFmt: "₹#,##0.00" };
     ws1["B7"].s = { numFmt: "₹#,##0.00" };
@@ -124,9 +126,9 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
     XLSX.utils.book_append_sheet(wb, ws1, "Summary");
 
 
-    /* ==============================
-       2. SCHEDULE SHEET
-    =============================== */
+    /* -------------------------
+       SCHEDULE SHEET
+    -------------------------- */
     let header = [
         ["Month", "Opening Principal", "EMI", "Principal Repaid", "Interest", "Closing Principal"]
     ];
@@ -134,7 +136,6 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
     let data = header.concat(globalSchedule);
     let ws2 = XLSX.utils.aoa_to_sheet(data);
 
-    // BLUE HEADER STYLE
     const headerStyle = {
         font: { bold: true, color: { rgb: "FFFFFF" } },
         fill: { fgColor: { rgb: "4F81BD" } },
@@ -145,21 +146,18 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
         }
     };
 
-    // Apply header formatting
-    let cols = ["A", "B", "C", "D", "E", "F"];
-    cols.forEach(col => ws2[col + "1"].s = headerStyle);
+    ["A", "B", "C", "D", "E", "F"].forEach(col => ws2[col + "1"].s = headerStyle);
 
-    // Data cell formatting
-    const cellStyle = {
+    const moneyCell = {
         alignment: { horizontal: "right" },
+        numFmt: "₹#,##0.00",
         border: {
             top: { style: "thin" }, bottom: { style: "thin" },
             left: { style: "thin" }, right: { style: "thin" }
-        },
-        numFmt: "₹#,##0.00"
+        }
     };
 
-    const numberStyle = {
+    const numberCell = {
         alignment: { horizontal: "center" },
         border: {
             top: { style: "thin" }, bottom: { style: "thin" },
@@ -167,27 +165,24 @@ document.getElementById("downloadExcel").addEventListener("click", function () {
         }
     };
 
-    // Apply formatting to rows
     for (let r = 2; r <= data.length; r++) {
-        ws2[`A${r}`].s = numberStyle;  // Month
+        ws2[`A${r}`].s = numberCell;
 
         ["B", "C", "D", "E", "F"].forEach(col => {
-            ws2[`${col}${r}`].s = cellStyle;
+            ws2[`${col}${r}`].s = moneyCell;
         });
     }
 
-    // Auto column width
     ws2["!cols"] = [
-        { wpx: 80 },
-        { wpx: 140 },
+        { wpx: 70 },
+        { wpx: 150 },
         { wpx: 100 },
-        { wpx: 140 },
+        { wpx: 150 },
         { wpx: 100 },
-        { wpx: 140 }
+        { wpx: 150 }
     ];
 
     XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
 
-    /* SAVE FILE */
     XLSX.writeFile(wb, `EMI_Schedule_${globalPrincipal}.xlsx`);
 });

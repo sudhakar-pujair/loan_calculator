@@ -6,7 +6,8 @@ body {
 
 .container {
     background: white;
-    width: 700px;
+    width: 90%;
+    max-width: 900px;
     margin: auto;
     padding: 25px;
     border-radius: 10px;
@@ -18,19 +19,36 @@ h1, h2 {
     color: #333;
 }
 
+/* ====================
+   Input Row
+===================== */
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
 label {
     font-weight: bold;
+    display: block;
 }
 
 input {
     width: 100%;
     padding: 8px;
-    margin-bottom: 15px;
+    margin-top: 5px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
+.calculate-btn {
+    height: 45px;
+    padding: 0 20px;
     background: #0066ff;
     color: white;
     border: none;
@@ -39,9 +57,13 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.calculate-btn:hover {
     background: #004fcc;
 }
+
+/* ====================
+   Table
+===================== */
 
 table {
     width: 100%;
@@ -61,6 +83,18 @@ th {
     text-align: center;
 }
 
+/* Hidden sections */
 .hidden {
     display: none;
+}
+
+#downloadExcel {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: green;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
 }

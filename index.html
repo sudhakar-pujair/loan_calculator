@@ -11,19 +11,29 @@
 <div class="container">
     <h1>EMI Calculator</h1>
 
-    <form id="emiForm">
-        <label>Principal Amount (₹)</label>
-        <input type="number" id="principal" required>
+    <!-- Input Row -->
+    <form id="emiForm" class="form-row">
 
-        <label>EMI (₹)</label>
-        <input type="number" id="emi" required>
+        <div class="form-group">
+            <label>Principal (₹)</label>
+            <input type="number" id="principal" required>
+        </div>
 
-        <label>Annual Interest Rate (%)</label>
-        <input type="number" id="rate" step="0.01" required>
+        <div class="form-group">
+            <label>EMI (₹)</label>
+            <input type="number" id="emi" required>
+        </div>
 
-        <button type="submit">Calculate</button>
+        <div class="form-group">
+            <label>Interest Rate (%)</label>
+            <input type="number" id="rate" step="0.01" required>
+        </div>
+
+        <button type="submit" class="calculate-btn">Calculate</button>
+
     </form>
 
+    <!-- Result Summary -->
     <div id="result" class="hidden">
         <h2>Result Summary</h2>
         <p><strong>Principal Amount:</strong> ₹<span id="r_principal"></span></p>
@@ -36,6 +46,7 @@
     </div>
 
     <h2 id="table_title" class="hidden">EMI Schedule</h2>
+
     <table id="scheduleTable" class="hidden">
         <thead>
         <tr>
@@ -52,7 +63,7 @@
 
 </div>
 
-<!-- SheetJS Library -->
+<!-- SheetJS -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <script src="script.js"></script>
