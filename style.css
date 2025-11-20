@@ -1,31 +1,18 @@
-/* ---------------------------------------------
-   REMOVE NUMBER INPUT ARROWS
----------------------------------------------- */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type=number] {
-  -moz-appearance: textfield;
-}
+/* REMOVE SPINNER ARROWS */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button { -webkit-appearance:none; }
+input[type=number] { -moz-appearance:textfield; }
 
-/* ---------------------------------------------
-   BASE PAGE
----------------------------------------------- */
+/* BASE LAYOUT */
 body{
   margin:0;
-  display:flex;
-  height:100vh;
-  overflow:hidden;
-  font-family: Arial, sans-serif;
   background:#0f1724;
   color:white;
+  font-family:Arial;
+  overflow:hidden;
 }
 
-/* ---------------------------------------------
-   COLLAPSE BUTTON
----------------------------------------------- */
+/* FIXED COLLAPSE BUTTON */
 .collapse-btn{
   position:fixed;
   top:15px;
@@ -35,15 +22,18 @@ body{
   color:white;
   cursor:pointer;
   border-radius:6px;
-  z-index:200; /* stays on top */
+  z-index:2000;
 }
-.collapse-btn:hover{
-  background:#2d3b55;
+.collapse-btn:hover{ background:#2d3b55; }
+
+/* LAYOUT CONTAINER */
+.layout{
+  display:flex;
+  height:100vh;
+  width:100%;
 }
 
-/* ---------------------------------------------
-   LEFT SIDEBAR (FIXED)
----------------------------------------------- */
+/* SIDEBAR (FIXED) */
 .sidebar{
   width:260px;
   background:linear-gradient(180deg,#1e2a4a,#0d1424);
@@ -51,120 +41,83 @@ body{
   display:flex;
   flex-direction:column;
   gap:20px;
-  position:fixed;  /* FIXED so it doesn't overlay dynamically */
-  top:0;
-  left:0;
-  bottom:0;
   border-right:1px solid #23304d;
-  transition:0.3s;
   overflow-y:auto;
-  z-index:50;
+  transition:0.3s;
 }
 
-.sidebar h2{
-  margin:0;
-  font-size:22px;
-  text-align:center;
-}
-
-/* COLLAPSED SIDEBAR */
+/* COLLAPSED STATE */
 .sidebar.collapsed{
-  width:0px;
+  width:0;
   padding:0;
   overflow:hidden;
 }
 
-/* ---------------------------------------------
-   MAIN CONTENT — shifts right
----------------------------------------------- */
+/* MAIN CONTENT */
 .main{
   flex:1;
   padding:20px;
-  margin-left:260px;   /* shifts to right */
-  transition: margin-left .3s;
   overflow-y:auto;
+  margin-left:0;
+  transition:0.3s;
 }
 
-.sidebar.collapsed ~ .main {
-  margin-left:0 !important;
-}
-
-/* ---------------------------------------------
-   FANCY INPUT CARD
----------------------------------------------- */
+/* FANCY INPUT CARD */
 .input-card{
   padding:20px;
   background:rgba(255,255,255,0.06);
   border-radius:12px;
+  border:1px solid rgba(255,255,255,0.15);
   backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,0.1);
 }
 
 /* Inputs */
-.form-group{
-  width:100%;
-  margin-bottom:16px;
-}
+.form-group{ margin-bottom:16px; }
 label{
-  font-size:14px;
   font-weight:bold;
-  margin-bottom:4px;
   display:block;
+  margin-bottom:4px;
 }
 input{
   width:100%;
   height:38px;
   padding:5px 8px;
   background:#1a2537;
-  border-radius:6px;
   border:1px solid #3a4661;
+  border-radius:6px;
   color:white;
 }
-input:focus{
-  outline:none;
-  border-color:#4F8CFF;
-}
 
-/* ---------------------------------------------
-   BUTTONS WITH ICONS
----------------------------------------------- */
+/* BUTTONS */
 .actions{
   margin-top:auto;
   display:flex;
   flex-direction:column;
   gap:12px;
 }
-
 .btn{
   width:100%;
   height:40px;
-  border-radius:6px;
   background:#1e2635;
   border:1px solid #3a4661;
   color:white;
-  font-weight:bold;
+  border-radius:6px;
+  cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  cursor:pointer;
-  transition:0.2s;
+  font-weight:bold;
 }
-.btn:hover{
-  background:#2d3b55;
-}
+.btn:hover{ background:#2d3b55; }
 
 .primary{
   background:#0066ff;
   border:none;
 }
-.primary:hover{
-  background:#0053cc;
-}
+.primary:hover{ background:#0053cc; }
 
-/* ---------------------------------------------
-   SUMMARY CARDS
----------------------------------------------- */
+/* SUMMARY */
 .card{
   background:#0b1220;
   padding:20px;
@@ -172,50 +125,30 @@ input:focus{
   border:1px solid #23304d;
   margin-bottom:20px;
 }
-
 .summary-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:12px;
 }
-
 .summary-item{
-  padding:12px;
   border:1px solid #23304d;
+  padding:12px;
   border-radius:8px;
 }
-.summary-item .label{
-  color:#8ea2c2;
-  font-size:13px;
-}
-.summary-item .value{
-  font-size:20px;
-  font-weight:bold;
-}
+.label{ color:#8ea2c2; }
+.value{ font-size:20px; font-weight:bold; }
 
-/* ---------------------------------------------
-   TABLE
----------------------------------------------- */
-.table-wrap{
-  overflow:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
+/* TABLE */
+.table-wrap{ overflow:auto; }
+table{ width:100%; border-collapse:collapse; }
 th{
   background:#2b5f8a;
   color:white;
   padding:8px;
 }
-
 td{
   border:1px solid #23304d;
   padding:8px;
   text-align:right;
 }
-td:first-child{
-  text-align:center;
-}
+td:first-child{ text-align:center; }
