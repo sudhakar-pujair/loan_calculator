@@ -146,14 +146,14 @@
   };
 
   /* -------------------------
-     EXPORT EXCEL
+     EXPORT EXCEL (ONE SHEET)
   -------------------------- */
   excelBtn.onclick = () => {
     if (!scheduleData.length) return alert("Please calculate first.");
 
     const wb = XLSX.utils.book_new();
 
-    const ws1 = XLSX.utils.aoa_to_sheet([
+    const sheetData = [
       ["Loan Summary"],
       ["Principal", summaryData.principal],
       ["EMI", summaryData.emi],
@@ -161,11 +161,8 @@
       ["Total Months", summaryData.months],
       ["Total Interest Paid", summaryData.totalInterest],
       ["Total Paid", summaryData.principal + summaryData.totalInterest],
-    ]);
-
-    XLSX.utils.book_append_sheet(wb, ws1, "Summary");
-
-    const ws2 = XLSX.utils.aoa_to_sheet([
+      [],
+      ["EMI Schedule"],
       ["Month", "Opening", "EMI", "Principal Repaid", "Interest", "Closing"],
       ...scheduleData.map((r) => [
         r.month,
@@ -175,20 +172,22 @@
         r.interest,
         r.closing,
       ]),
-    ]);
+    ];
 
-    XLSX.utils.book_append_sheet(wb, ws2, "Schedule");
+    const ws = XLSX.utils.aoa_to_sheet(sheetData);
+    XLSX.utils.book_append_sheet(wb, ws, "EMI Report");
 
     XLSX.writeFile(wb, "EMI_Schedule.xlsx");
   };
 
   /* -------------------------
-     EXPORT PDF
+     EXPORT PDF (INCLUDES SUMMARY)
   -------------------------- */
   pdfBtn.onclick = async () => {
     if (!scheduleData.length) return alert("Please calculate first.");
 
-    const target = document.getElementById("pdfContent");
+    const target = document.querySelector(".main"); // Summary + Table
+
     const canvas = await html2canvas(target, { scale: 2 });
     const img = canvas.toDataURL("image/png");
 
